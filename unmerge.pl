@@ -41,6 +41,7 @@ my $lhs_text = q{};
 my $rhs_text = q{};
 my $lhs_file = q{};
 my $rhs_file = q{};
+my $str = q{};
 
 # Open the merge file and write its contents to the lhs and rhs.
 open my $MERGE, '<', $merge_file
@@ -65,7 +66,9 @@ while (my $line = <$MERGE>)
         if ($line =~ m{>>>>>>>\s+(\S+)}xms)
         {
             $rhs = 0;
-            $rhs_file = $merge_file . $1 . 'unmerged'  unless $rhs_file;
+	    $str = $1;	 
+	    $str =~ s/\//_/g;
+            $rhs_file = $merge_file . $str . 'unmerged'  unless $rhs_file;
             next LINE;
         }
 
@@ -76,7 +79,9 @@ while (my $line = <$MERGE>)
         if ($line =~ m{<<<<<<<\s+(\S+)}xms)
         {
             $lhs = 1;
-            $lhs_file = $merge_file . $1 . 'unmerged'  unless $lhs_file;
+	    $str = $1;
+	    $str =~ s/\//_/g;
+            $lhs_file = $merge_file . $str . 'unmerged'  unless $lhs_file;
             next LINE;
         }
         else
